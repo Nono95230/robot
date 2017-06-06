@@ -13,15 +13,15 @@ class TagTableSeeder extends Seeder
     {
         DB::table('tags')->insert([
                 [
-                        'name' => 'army',
+                        'name' => 'army'
 
                 ],
                 [
-                        'name' => 'medical',
+                        'name' => 'medical'
 
                 ],
                 [
-                        'name' => 'techno',
+                        'name' => 'techno'
 
                 ],
         ]);

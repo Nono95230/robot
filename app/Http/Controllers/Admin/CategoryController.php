@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use DB;
+use App\Http\Requests\CategoryRequest;
 
 class CategoryController extends Controller
 {
 
     use UserAdmin;
+
     public function __construct(Request $request){
 
         $this->setUser();
@@ -45,6 +47,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Category::class); // politique d'accès 
+
         return view('back.category.create');
     }
 
@@ -54,9 +58,18 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        //
+        $category = Category::create($request->all());
+
+        $category->save();
+
+        $message = [
+            'success',
+            sprintf('Thanks for add the category "%s" !', $category->title)
+        ];
+        
+        return redirect()->route('category.index')->with('message', $message);
     }
 
     /**
@@ -79,7 +92,10 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
         $this->authorize('update', $category);
-        return view('back.category.edit');
+
+        $title = 'Edit the category : '. $category->title;
+
+        return view('back.category.edit', compact('category','title'));
     }
 
     /**
@@ -89,9 +105,18 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(CategoryRequest $request, Category $category)
     {
-        //
+        $this->authorize('update', $category);
+
+        $category->update($request->all());
+
+        $message = [
+            'success',
+            sprintf('Update of the category "%s" performed successfully !', $category->title)
+        ];
+
+        return redirect()->route('category.index')->with('message', $message);
     }
 
     /**
@@ -104,11 +129,13 @@ class CategoryController extends Controller
     {
         $this->authorize('delete', $category); // politique d'accès 
 
-        $categoryName = $category->name;
+        $categoryName = $category->title;
         $category->delete();
 
-        $message = sprintf('Suppression de la catégorie %s effectuée avec succès !', $categoryName);
-
+        $message = [
+            'success',
+            sprintf('Delete of the category "%s" performed successfully !', $categoryName)
+        ];
         return redirect()->route('category.index')->with('message', $message);
     }
 }

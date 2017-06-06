@@ -7,13 +7,12 @@
 <div class="row">
     <div class="col s12">
 		<h2 class="left">@yield('title')</h2>
-		<a class="waves-effect waves-light btn right red-site" href="{{ route('robot.store') }}">
-			<i class="material-icons left">list</i>Return to the robots's list
+		<a class="waves-effect waves-light btn right red-site" href="{{ route('user.store') }}">
+			<i class="material-icons left">list</i>Return to the users's list
 		</a>
 	</div>
 </div>
 @endsection
-
 
 
 @section('content')
@@ -24,72 +23,48 @@
 
     		@include('partials.flash-errors')
 
-		    <form class="col s12" method="post" action="{{ route('robot.update', $robot->id) }}" enctype="multipart/form-data">
-	    		{{ csrf_field() }} {{-- token pour protéger votre formulaire CSRF --}}
-	    		{{ method_field('PUT') }}
+		    <form class="col s12" method="post" action="{{ route('user.update', $user->id) }}">
+    		  {{ csrf_field() }} {{-- token pour protéger votre formulaire CSRF --}}
+    		  {{ method_field('PUT') }}
+		      <div class="row">
+		        <div class="input-field col s4">
+		          <input id="user_name" name="name" type="text" class="validate" value="{{$user->name}}">
+		          <label for="user_name">Name</label>
+         			@include('partials.flash-error-field', ['field' => 'name'])
+		        </div>
+		        <div class="input-field col s4">
+		          <input id="user_email" name="email" type="email" class="validate" value="{{$user->email}}">
+		          <label for="user_email">Email</label>
+         			@include('partials.flash-error-field', ['field' => 'email'])
+		        </div>
+				<div class="input-field col s4">
+					<select name="role"  >
+						<option disabled {{ selected_fields('default' , 'choose' , 'selected') }}>Choose his role</option>
+						<option  value="administrator"  {{ selected_fields('administrator' , $user->role, 'selected') }} >Administrator</option>
+						<option  value="editor" {{ selected_fields(  'editor' , $user->role, 'selected') }} >Editor</option>
+					</select>
+					<label>Role</label>
+
+         			@include('partials.flash-error-field', ['field' => 'role'])
+
+				</div>
+		      </div>
 		      <div class="row">
 		        <div class="input-field col s6">
-		          <input id="robot_name" name="name" type="text" class="validate" value="{{$robot->name}}">
-		          <label for="robot_name">Name</label>
-         			@if($errors->has('name')) <div class="error">{{$errors->first('name')}}</div>@endif
+		          <input id="user_password" name="password" type="password" class="validate">
+		          <label for="user_password">Password</label>
+         			@include('partials.flash-error-field', ['field' => 'password'])
 		        </div>
-				<div class="input-field col s6">
-					<select name="category_id">
-						<option disabled selected>Choose your category</option>
-						@foreach ($categories as $id => $category)
-							<option value="{{ $id }}" {{ selected_fields($id,  $robot->category_id , 'selected') }} >{{ $category }}</option>
-						@endforeach
-						<option value="" {{ selected_fields(null, $robot->category_id, 'selected') }}>Pas de catégorie</option>
-					</select>
-					<label>Category</label>
-         			@if($errors->has('category_id')) <div class="error">{{$errors->first('category_id')}}</div>@endif
-				</div>
-		      </div>
-		      <div class="row">
-		        <div class="input-field col s12">
-		          <textarea id="robot_description" name="description" class="materialize-textarea">{{ $robot->description }}</textarea>
-		          <label for="robot_description">Description</label>
-         			@if($errors->has('description')) <div class="error">{{$errors->first('description')}}</div>@endif
+		        <div class="input-field col s6">
+		          <input id="user_confirm_password" name="confirm_password" type="password" class="validate">
+		          <label for="user_confirm_password">Confirm Password</label>
+         			@include('partials.flash-error-field', ['field' => 'confirm_password'])
 		        </div>
 		      </div>
-		      <div class="row">
-		        <div class="input-field col s12">
-		    		@foreach ($tags as $id => $tag)
-					    <p>
-					      <input type="checkbox" name="tags[]" id="robot_tag{{ $id }}" value="{{ $id }}" {{ $robot->isTag($id)? 'checked' : '' }} />
-					      <label for="robot_tag{{ $id }}">{{ $tag }}</label>
-					    </p>
-		    		@endforeach
-         			@if($errors->has('tags')) <div class="error">{{ $errors->first('tags') }}</div>@endif
-				</div>
-		      </div>
-		      <div class="row">
-		        <div class="input-field col s12 l3">
-				  <div class="switch">
-				    <label>
-				      Unpublished
-				      <input name="status" type="checkbox" value="published" {{ $robot->status == 'published' ? 'checked' : ''  }}>
-				      <span class="lever"></span>
-				      Published
-				    </label>
-         			@if($errors->has('status')) <div class="error">{{ $errors->first('status') }}</div>@endif
-				  </div>
-				</div>
-		        <div class="input-field col s12 l9">
-				    <div class="file-field input-field">
-				      <div class="btn">
-				        <span>File</span>
-				        <input name="file" type="file">
-				      </div>
-				      <div class="file-path-wrapper">
-				        <input class="file-path validate" type="text">
-				      </div>
-				    </div>
-				</div>
 
 		      <div class="row">
 		        <div class="input-field col s12">
-					<button class="btn waves-effect waves-light" type="submit">Edit this robot
+					<button class="btn waves-effect waves-light" type="submit">Add this user
 						<i class="material-icons right">send</i>
 					</button>
 				</div>

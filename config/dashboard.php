@@ -8,7 +8,7 @@ return [
         'list-link' => '/admin/robot',
         'add-link' => '/admin/robot/create',
         'image' => 'https://res.cloudinary.com/dacg0wegv/image/upload/t_media_lib_thumb/v1463989969/squares_dylwo9.png',
-        'count' => 26
+        'count' => 3
     ],
     [
         'number' => 2,
@@ -17,7 +17,7 @@ return [
         'list-link' => '/admin/user',
         'add-link' => '/admin/user/create',
         'image' => 'https://res.cloudinary.com/dacg0wegv/image/upload/t_media_lib_thumb/v1463989969/people_2_knqa3y.png',
-        'count' => 26
+        'count' => 3
     ],
     [
         'number' => 3,
@@ -26,7 +26,7 @@ return [
         'list-link' => '/admin/category',
         'add-link' => '/admin/category/create',
         'image' => 'https://res.cloudinary.com/dacg0wegv/image/upload/t_media_lib_thumb/v1463989969/squares_dylwo9.png',
-        'count' => 26
+        'count' => 3
     ],
     [
         'number' => 4,
@@ -35,6 +35,6 @@ return [
         'list-link' => '/admin/tag',
         'add-link' => '/admin/tag/create',
         'image' => 'https://res.cloudinary.com/dacg0wegv/image/upload/t_media_lib_thumb/v1463989969/squares_dylwo9.png',
-        'count' => 26
+        'count' => 3
     ]
 ];

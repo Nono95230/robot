@@ -16,13 +16,13 @@ class UserTableSeeder extends Seeder
             [
                 'name' => 'Nono95230',
                 'email' => 'arnaud.bach1987@gmail.com',
-                'password' => bcrypt('12345'),
+                'password' => bcrypt('ab123456'),
                 'role'=> 'administrator'
             ],
             [
                 'name' => 'Kenshiro222',
                 'email' => 'kenshiro222@hotmail.com',
-                'password' => bcrypt('12345'),
+                'password' => bcrypt('ab123456'),
                 'role'=> 'editor'
             ],
 

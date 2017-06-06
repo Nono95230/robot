@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use DB;
+use App\Http\Requests\TagRequest;
 
 class TagController extends Controller
 {
 
     use UserAdmin;
+
     public function __construct(Request $request){
 
         $this->setUser();
@@ -47,6 +49,8 @@ class TagController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Tag::class); 
+
         return view('back.tag.create');
     }
 
@@ -56,9 +60,18 @@ class TagController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TagRequest $request)
     {
-        //
+        $tag = Tag::create($request->all());
+
+        $tag->save();
+
+        $message = [
+            'success',
+            sprintf('Thanks for add the tag "%s" !', $tag->name)
+        ];
+        
+        return redirect()->route('tag.index')->with('message', $message);
     }
 
     /**
@@ -81,7 +94,10 @@ class TagController extends Controller
     public function edit(Tag $tag)
     {
         $this->authorize('update', $tag);
-        return view('back.tag.edit');
+
+        $title = 'Edit the tag : '. $tag->name;
+
+        return view('back.tag.edit', compact('tag','title'));
     }
 
     /**
@@ -91,9 +107,18 @@ class TagController extends Controller
      * @param  \App\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tag $tag)
+    public function update(TagRequest $request, Tag $tag)
     {
-        //
+        $this->authorize('update', $tag);
+
+        $tag->update($request->all());
+
+        $message = [
+            'success',
+            sprintf('Update of the tag "%s" performed successfully !', $tag->name)
+        ];
+
+        return redirect()->route('tag.index')->with('message', $message);
     }
 
     /**
@@ -109,7 +134,10 @@ class TagController extends Controller
         $tagName = $tag->name;
         $tag->delete();
 
-        $message = sprintf('Suppression du tag %s effectuée avec succès !', $tagName);
+        $message = [
+            'success',
+            sprintf('Delete of the tag "%s" performed successfully !', $tagName)
+        ];
 
         return redirect()->route('tag.index')->with('message', $message);
     }

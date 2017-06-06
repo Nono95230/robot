@@ -8,6 +8,8 @@ if(!function_exists('selected_fields')){
 
 		if( is_array($data) && !empty($data) && in_array($name, $data) ) return $checked ;
 
+		if( $name == 'default' ) return $checked ;
+
 		if( $name == $data ) return $checked;
 
 	}

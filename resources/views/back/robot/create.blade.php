@@ -29,7 +29,9 @@
 		        <div class="input-field col s6">
 		          <input id="robot_name" name="name" type="text" class="validate" value="{{old('name')}}">
 		          <label for="robot_name">Name</label>
-         			@if($errors->has('name')) <div class="error">{{$errors->first('name')}}</div>@endif
+
+         			@include('partials.flash-error-field', ['field' => 'name'])
+
 		        </div>
 				<div class="input-field col s6">
 					<select name="category_id"  >
@@ -40,14 +42,18 @@
 						<option value="" {{ selected_fields(null,  old('category_id'), 'selected') }}>Pas de catégorie</option>
 					</select>
 					<label>Category</label>
-         			@if($errors->has('category_id')) <div class="error">{{$errors->first('category_id')}}</div>@endif
+
+         			@include('partials.flash-error-field', ['field' => 'category_id'])
+
 				</div>
 		      </div>
 		      <div class="row">
 		        <div class="input-field col s12">
 		          <textarea id="robot_description" name="description" class="materialize-textarea">{{old('description')}}</textarea>
 		          <label for="robot_description">Description</label>
-         			@if($errors->has('description')) <div class="error">{{$errors->first('description')}}</div>@endif
+
+         			@include('partials.flash-error-field', ['field' => 'description'])
+
 		        </div>
 		      </div>
 		      <div class="row">
@@ -58,7 +64,9 @@
 					      <label for="robot_tag{{ $id }}">{{ $tag }}</label>
 					    </p>
 		    		@endforeach
-         			@if($errors->has('tags')) <div class="error">{{$errors->first('tags')}}</div>@endif
+					
+         			@include('partials.flash-error-field', ['field' => 'tags'])
+
 				</div>
 		      </div>
 		      <div class="row">
@@ -70,7 +78,9 @@
 				      <span class="lever"></span>
 				      Published
 				    </label>
-         			@if($errors->has('status')) <div class="error">{{$errors->first('status')}}</div>@endif
+					
+         			@include('partials.flash-error-field', ['field' => 'status'])
+
 				  </div>
 				</div>
 		        <div class="input-field col s12 l9">

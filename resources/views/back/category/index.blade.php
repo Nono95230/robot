@@ -29,8 +29,7 @@
 
 <div class="row">
     <div class="col s12">
-		<!-- <table class="bordered striped hightlight centered responsive-table">
-		 --><table class="bordered striped hightlight">
+		<table class="bordered striped hightlight">
 			<thead>
 				<tr>
 					<th>Id</th>

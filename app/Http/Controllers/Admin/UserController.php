@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+
 use DB;
+use App\Http\Requests\UserRequest;
+
 
 class UserController extends Controller
 {
 
     use UserAdmin;
+
     public function __construct(Request $request){
 
         $this->setUser();
@@ -45,7 +49,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $this->authorize('create', User::class); // politique d'accès 
+
+        return view( 'back.user.create' );
     }
 
     /**
@@ -54,9 +60,18 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        //
+        $user = User::create($request->all());
+
+        $user->save();
+
+        $message = [
+            'success',
+            sprintf('Thanks for add the user "%s" !', $user->name)
+        ];
+        
+        return redirect()->route('user.index')->with('message', $message);
     }
 
     /**
@@ -78,7 +93,11 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        $this->authorize('update', $user); // politique d'accès 
+
+        $title = 'Edit the user : '. $user->name;
+
+        return view('back.user.edit', compact('user', 'title'));
     }
 
     /**
@@ -88,10 +107,32 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
-        //
-    }
+        $this->authorize('update', $user);
+
+        if ($user->exists){
+            if ( !$request->get('password') == '' ) {
+                // doesn't work actually @todo arnaud : make it 's working
+                //$user::$rules['password'] = 'bail|required|between:8,10';
+                $data = $request->except('confirm_password');
+            }
+            else{
+                $data = $request->except('password','confirm_password');
+            }
+            
+
+            $user->update($data);
+
+            $message = [
+                'success',
+                sprintf('Update of the user %s performed successfully !', $user->name)
+            ];
+
+            return redirect()->route('user.index')->with('message', $message);
+        }
+
+   }
 
     /**
      * Remove the specified resource from storage.
@@ -101,6 +142,16 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $this->authorize('delete', $user); // politique d'accès 
+
+        $userName = $user->name;
+        $user->delete();
+
+        $message = [
+            'success',
+            sprintf('Suppression de l\'utilisateur %s effectuée avec succès !', $userName)
+        ];
+
+        return redirect()->route('user.index')->with('message', $message);
     }
 }

@@ -7,14 +7,31 @@ use DB;
 
 class Tag extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
-		'name'
-	];
+        'name'
+    ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at'
+    ];
+
     public function robots()
     {
         return $this->belongsToMany(Robot::class);
     }
-
+    //doesn't work
     public function countRobotByTag()
     {
         $tagsCount = Tag::withCount('robots')->get();
@@ -27,6 +44,7 @@ class Tag extends Model
         }
 
     }
+    //doesn't work
     public function countRobotByTaggg()
     {
     	return DB::table('tags','robots')

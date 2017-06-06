@@ -7,6 +7,7 @@ use Auth;
 use App\Http\Controllers\Controller;
 use App\Category;
 use Illuminate\Http\Request;
+
 //use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -26,36 +27,42 @@ class LoginController extends Controller
 
          if($request->isMethod('post'))
          {
-         
-            //dd($request->remember);  // $request->input('remember')
-            //dd($request->email);  // $request->input('email')
             
             $this->validate($request, [
                 'email' => 'bail|required|email|min:10|max:255',
                 'password' => 'bail|required|between:8,10',
                 'remember' => 'in:on'
             ],  [
-                'email.required' => 'We need to know your e-mail address Toto !',
+                'email.required' => 'We need to know your e-mail address !',
                 'password.required' => 'The password field is FUCKING required !'
-                // 'email.required' => 'email obligatoire',
-                // 'email.email' => 'Syntax email non valide',
-                // 'password.between' => 'le mot de passe doit être compris entre 8 à 10 caractères',
-                // 'password.required' => 'le mot de passe est obligatoire'
             ]);
             
             // vérifions maintenant que l'utilisateur à les droit pour accèder à notre espace sécurité, pensez à faire un use Auth 
              if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
-             
-                session()->flash('message', 'Bienvenu dans le dashboard'); // enregistrer en variable de session
+                
+                $userName = Auth::user()->name;
+
+                $message = [
+                    'success',
+                    sprintf('Bienvenue %s',$userName)
+                ];
+
+                session()->flash('message', $message); // enregistrer en variable de session
                 
                 return redirect()->intended('admin/dashboard'); // redirection propre au niveau de la sécurité
                 
              
              }
              
-             session()->flash('message', 'Mot de passe ou email invalide');
-             
-             return back()->withInput(['email' => $request->email]);
+            $message = [
+                'error',
+                sprintf('Mot de passe ou email invalide')
+            ];
+
+            session()->flash('message', $message);
+
+            return back()->withInput(['email' => $request->email]);
+
          }
         
         return view('auth.login');
@@ -63,9 +70,16 @@ class LoginController extends Controller
     }
 
     public function logout(){
+
+        $userName = Auth::user()->name;
+
         auth()->logout();
 
-        session()->flash('message', 'Thanks so much for visit');
+        $message = [
+            'success',
+            sprintf('Thanks so much for visit %s', $userName)
+        ];
+        session()->flash('message', $message);
 
         return redirect()->home();
     }

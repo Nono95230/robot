@@ -193,6 +193,8 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         App\Providers\StatServiceProvider::class,
 
+        //App\Providers\FormMacroServiceProvider::class,
+
     ],
 
     /*

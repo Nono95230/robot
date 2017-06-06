@@ -28,7 +28,9 @@ class CreateRobotsTable extends Migration {
             // id de catégorie se trouvant dans cette table
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('SET NULL'); // FK
             $table->foreign('user_id')->references('id')->on('users')->onDelete('SET NULL'); // FK
-            $table->timestamps(); // Eloquent pour le Model de Laravel
+            $table->timestamp('created_at')->useCurrent()->nullable();
+            $table->timestamp('updated_at')->nullable();
+            $table->softDeletes()->nullable();
         });
     }
 

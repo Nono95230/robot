@@ -12,8 +12,6 @@ use App\Tag;
 use App\Category;
 use App\User;
 
-//use Gate;
-
 class RobotController extends Controller
 {
 
@@ -67,10 +65,12 @@ class RobotController extends Controller
      */
     public function store(RobotRequest $request)
     {
-
         $robot = Robot::create($request->all());
-        $robot->tags()->sync($request->tags); 
+        $robot->tags()->sync($request->tags);
 
+        // Save User Id
+        $userId = $robot->getUserId();
+        $robot->setUserId($userId);
 
         if ($request->hasFile('link')) {
 
@@ -82,10 +82,13 @@ class RobotController extends Controller
             $file->storeAs('images', $linkName );
 
             $robot->link = $linkName;
-            $robot->save();
 
         }
-        $message = sprintf('Thanks for add the robot <strong>%s</strong> !', $robot->name);
+        $robot->save();
+        $message = [
+            'success',
+            sprintf('Thanks for add the robot %s !', $robot->name)
+        ];
         
         return redirect()->route('robot.index')->with('message', $message);
     }
@@ -143,17 +146,21 @@ class RobotController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(RobotRequest $request, $id)
+    public function update(RobotRequest $request, Robot $robot)
     {
+        $this->authorize('update', $robot);//add today @todo arnaud à supprimer si bug sinon virer ce comm
         //dd($request->all()); 
         
-        $robot = Robot::find($id);
+        //$robot = Robot::find($id);//@todo arnaud this to !
         $robot->update($request->all());
         
         $robot->tags()->sync($request->tags); // detach puis un attach <=> la mise des jours des tags du robot
 
-        $message = sprintf('Mise à jour du robot %s effectuée avec succès !', $robot->name);
-        $message = sprintf('Update of the robot <strong>%s</strong> performed successfully !', $robot->name);
+        //$message = sprintf('Mise à jour du robot %s effectuée avec succès !', $robot->name);
+        $message = [
+            'success',
+            sprintf('Update of the robot %s performed successfully !', $robot->name)
+        ];
 
         return redirect()->route('robot.index')->with('message', $message);
 
@@ -193,7 +200,11 @@ class RobotController extends Controller
 
         $robotName = $robot->name;
         $robot->delete();
-        $message = sprintf('Suppression du robot %s effectuée avec succès !', $robotName);
+
+        $message = [
+            'success',
+            sprintf('Suppression du robot %s effectuée avec succès !', $robotName)
+        ];
 
         return redirect()->route('robot.index')->with('message', $message);
 

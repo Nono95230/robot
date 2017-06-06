@@ -20,7 +20,9 @@ class CreateUsersTable extends Migration
             $table->string('password', 100);
             $table->enum('role', ['administrator', 'editor'])->default('editor');
             $table->rememberToken();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent()->nullable();
+            $table->timestamp('updated_at')->nullable();
+            $table->softDeletes()->nullable();
         });
     }
 

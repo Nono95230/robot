@@ -1,21 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ config('app.locale') }}">
   <head>
-    <!-- EX -->
-    <!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="msapplication-tap-highlight" content="no">
-    <meta name="description" content="Materialize is a modern responsive CSS framework based on Material Design by Google. ">
-    Favicons
-    <link rel="apple-touch-icon-precomposed" href="images/favicon/apple-touch-icon-152x152.png">
-    <meta name="msapplication-TileColor" content="#FFFFFF">
-    <meta name="msapplication-TileImage" content="images/favicon/mstile-144x144.png">
-    <link rel="icon" href="images/favicon/favicon-32x32.png" sizes="32x32">
-    Android 5 Chrome Color
-    <meta name="theme-color" content="#EE6E73">
-    CSS
-    <link href="css/prism.css" rel="stylesheet">
-    <link href="css/ghpages-materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
-     -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,14 +16,18 @@
 
     <style>
       @media screen and (min-width: 993px) {
-        main, header, footer{
+        body.withSidebar main,
+        body.withSidebar header,
+        body.withSidebar footer{
           padding-left:300px;
         }
-        .container{
+        body.withSidebar .container{
           max-width: initial!important;
           width: 84%!important;
         }
       }
+
+
       main{
         margin-top:20px;
       }
@@ -93,21 +82,51 @@
         padding: 0 1rem!important;
       }
 
+      .card.alert button{
+        background: none;
+        border: none;
+        position: absolute;
+        top: 19px;
+        right: 10px;
+        font-size: 20px;
+        color: #fff;
+      }
+      .card.alert ul{
+        padding-left: 80px;
+      }
+      form .card.alert {
+        margin-top: -28px;
+        background-color: #E57373!important;
+        background-color: #EF9A9A!important;
+      }
+      form .card.alert .card-content{
+        padding: 10px 24px;
+      }
+      form .card.alert button{
+        top: 5px;
+      }
+
     </style>
 
     @include('partials.style')
 
   </head>
-  <body>
-    {{-- Commentaire --}}
-    {{-- @inject('stat','App\Services\StatRobot')
-    
-    <h1>{{ $stat->count()}}</h1> --}}
+
+  <?php $classBody = '' ?>
+  @if(auth()->check()) {{-- test si vous êtes connecté --}}
+    <?php $classBody = 'withSidebar'; ?>
+  @endif
+
+  <body class="<?php echo $classBody; ?>">
 
     @include('partials.header')
 
     <main>
       <div class="container">
+        {{-- Commentaire --}}
+        {{-- @inject('stat','App\Services\StatRobot')
+        
+        <h1>{{ $stat->count()}}</h1> --}}
 
         @include('partials.flash-message')
         @yield('content_header')

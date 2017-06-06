@@ -4,11 +4,12 @@
     <nav class="top-nav">
       <div class="container">
         <div class="nav-wrapper">
-          <!-- <a class="page-title">@yield('title')</a> -->
           <a href="/" class="brand-logo">Robot</a>
-          <a href="#" data-activates="nav-mobile" class="button-collapse top-nav full hide-on-large-only">
-            <i class="material-icons">menu</i>
-          </a>
+          @if( auth()->check() )
+            <a href="#" data-activates="nav-mobile" class="button-collapse top-nav full hide-on-large-only">
+              <i class="material-icons">menu</i>
+            </a>
+          @endif
           <a id="activates-mobile-demo" href="#" data-activates="mobile-demo" class="button-collapse right"><i class="material-icons">menu</i></a>
           <ul class="hide-on-med-and-down right">
               @include('partials.category')

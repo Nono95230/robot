@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-	use DB;
+use DB;
 
 class StatAll{
 
