@@ -27,21 +27,14 @@
 	    		{{ csrf_field() }} {{-- token pour protéger votre formulaire CSRF --}}
 		      <div class="row">
 		        <div class="input-field col s6">
-		          <input id="robot_name" name="name" type="text" class="validate" value="{{old('name')}}">
-		          <label for="robot_name">Name</label>
+		        	{!! Form::inputMacro('text', 'name', 'robot_name', old('name')) !!}
 
          			@include('partials.flash-error-field', ['field' => 'name'])
 
 		        </div>
 				<div class="input-field col s6">
-					<select name="category_id"  >
-						<option disabled selected>Choose your category</option>
-						@foreach ($categories as $id => $category)
-							<option  value="{{ $id }}" {{ selected_fields($id,  old('category_id'), 'selected') }} >{{ $category }}</option>
-						@endforeach
-						<option value="" {{ selected_fields(null,  old('category_id'), 'selected') }}>Pas de catégorie</option>
-					</select>
-					<label>Category</label>
+
+					{!! Form::selectMacro(false, 'category_id', 'category', $categories, old('category_id')) !!}
 
          			@include('partials.flash-error-field', ['field' => 'category_id'])
 
@@ -49,8 +42,7 @@
 		      </div>
 		      <div class="row">
 		        <div class="input-field col s12">
-		          <textarea id="robot_description" name="description" class="materialize-textarea">{{old('description')}}</textarea>
-		          <label for="robot_description">Description</label>
+		          {!! Form::textAreaMacro('description', 'robot_description', old('description') ) !!}
 
          			@include('partials.flash-error-field', ['field' => 'description'])
 
@@ -58,12 +50,7 @@
 		      </div>
 		      <div class="row">
 		        <div class="input-field col s12">
-		    		@foreach ($tags as $id => $tag)
-					    <p>
-					      <input type="checkbox" name="tags[]" id="robot_tag{{ $id }}" value="{{ $id }}" {{ selected_fields($id, old('tags')) }}  />
-					      <label for="robot_tag{{ $id }}">{{ $tag }}</label>
-					    </p>
-		    		@endforeach
+		          {!! Form::checkboxMacro( 'tags', 'robot_tag', $tags, old('tags') ) !!}
 					
          			@include('partials.flash-error-field', ['field' => 'tags'])
 
@@ -97,9 +84,7 @@
 
 		      <div class="row">
 		        <div class="input-field col s12">
-					<button class="btn waves-effect waves-light" type="submit">Add this robot
-						<i class="material-icons right">send</i>
-					</button>
+					{!! Form::submitMacro('add','robot') !!}
 				</div>
 		      </div>
 		      </div>

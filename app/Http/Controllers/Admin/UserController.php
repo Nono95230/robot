@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use DB;
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\UserAddRequest;
+use App\Http\Requests\UserEditRequest;
 
 
 class UserController extends Controller
@@ -60,7 +61,7 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UserRequest $request)
+    public function store(UserAddRequest $request)
     {
         $user = User::create($request->all());
 
@@ -107,7 +108,7 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(UserRequest $request, User $user)
+    public function update(UserEditRequest $request, User $user)
     {
         $this->authorize('update', $user);
 

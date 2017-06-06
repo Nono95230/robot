@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 
-class UserRequest extends FormRequest
+class UserAddRequest extends FormRequest
 {
 
     /**
@@ -27,10 +27,9 @@ class UserRequest extends FormRequest
     {
         
         return [
-            'name' => 'bail|required|string|min:4|unique:users,name,'. $this->user->id,
-            'email' => 'bail|required|email|min:10|max:255|unique:users,email,'. $this->user->id,
-            //'password' => 'bail|required_if:user_id,'.$this->user->id.'|between:6,30'
-            //'password' => 'bail|required|between:6,30',
+            'name' => 'bail|required|string|min:4|unique:users,name',
+            'email' => 'bail|required|email|min:10|max:255|unique:users,email',
+            'password' => 'bail|required|between:6,30',
             'confirm_password' => 'same:password',
             'role' => 'in:administrator,editor'
         ];

@@ -29,26 +29,19 @@
 	    		{{ method_field('PUT') }}
 		      <div class="row">
 		        <div class="input-field col s6">
-		          <input id="robot_name" name="name" type="text" class="validate" value="{{$robot->name}}">
-		          <label for="robot_name">Name</label>
+		        	{!! Form::inputMacro('text', 'name', 'robot_name', $robot->name, old('name')) !!}
          			@include('partials.flash-error-field', ['field' => 'name'])
+
 		        </div>
 				<div class="input-field col s6">
-					<select name="category_id">
-						<option disabled selected>Choose your category</option>
-						@foreach ($categories as $id => $category)
-							<option value="{{ $id }}" {{ selected_fields($id,  $robot->category_id , 'selected') }} >{{ $category }}</option>
-						@endforeach
-						<option value="" {{ selected_fields(null, $robot->category_id, 'selected') }}>Pas de catégorie</option>
-					</select>
-					<label>Category</label>
+
+					{!! Form::selectMacro(false, 'category_id', 'category', $categories, $robot->category_id, old('category_id') ) !!}
          			@include('partials.flash-error-field', ['field' => 'category_id'])
 				</div>
 		      </div>
 		      <div class="row">
 		        <div class="input-field col s12">
-		          <textarea id="robot_description" name="description" class="materialize-textarea">{{ $robot->description }}</textarea>
-		          <label for="robot_description">Description</label>
+		          {!! Form::textAreaMacro('description', 'robot_description', $robot->description, old('description') ) !!}
          			@include('partials.flash-error-field', ['field' => 'description'])
 		        </div>
 		      </div>
@@ -56,7 +49,11 @@
 		        <div class="input-field col s12">
 		    		@foreach ($tags as $id => $tag)
 					    <p>
-					      <input type="checkbox" name="tags[]" id="robot_tag{{ $id }}" value="{{ $id }}" {{ $robot->isTag($id)? 'checked' : '' }} />
+					      @if( old('tags') != null && $robot->isTag($id) != old('tags') )
+					      	<input type="checkbox" name="tags[]" id="robot_tag{{ $id }}" value="{{ $id }}" {{ selected_fields($id, old('tags') ) }} />
+					      @else
+					      	<input type="checkbox" name="tags[]" id="robot_tag{{ $id }}" value="{{ $id }}" {{ $robot->isTag($id)? 'checked' : '' }} />
+					      @endif
 					      <label for="robot_tag{{ $id }}">{{ $tag }}</label>
 					    </p>
 		    		@endforeach
@@ -68,7 +65,11 @@
 				  <div class="switch">
 				    <label>
 				      Unpublished
-				      <input name="status" type="checkbox" value="published" {{ $robot->status == 'published' ? 'checked' : ''  }}>
+				      {{--@if( old('status') === null || old('status') != null && $robot->status != old('status') )
+				      	<input name="status" type="checkbox" value="published" {{ selected_fields('published', old('status') )  }}>
+				      @elseif( old('status') === null && $robot->status != old('status') )--}}
+				      	<input name="status" type="checkbox" value="published" {{ selected_fields('published', $robot->status) }}>
+				      {{--@endif--}}
 				      <span class="lever"></span>
 				      Published
 				    </label>
@@ -88,10 +89,8 @@
 				</div>
 
 		      <div class="row">
-		        <div class="input-field col s12">
-					<button class="btn waves-effect waves-light" type="submit">Edit this robot
-						<i class="material-icons right">send</i>
-					</button>
+		        <div class="input-field col s12">					
+					{!! Form::submitMacro('edit','robot') !!}
 				</div>
 		      </div>
 		      </div>

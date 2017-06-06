@@ -28,17 +28,14 @@
     		  {{ method_field('PUT') }}
 		      <div class="row">
 		        <div class="input-field col s6">
-		          <input id="category_title" name="title" type="text" class="validate" value="{{$category->title}}">
-		          <label for="category_title">Title</label>
+		          {!! Form::inputMacro('text', 'title', 'category_title', $category->title, old('title')) !!}
          			@include('partials.flash-error-field', ['field' => 'title'])
 		        </div>
 		      </div>
 
 		      <div class="row">
 		        <div class="input-field col s12">
-					<button class="btn waves-effect waves-light" type="submit">Add this category
-						<i class="material-icons right">send</i>
-					</button>
+					{!! Form::submitMacro('edit', 'category') !!}
 				</div>
 		      </div>
 		      </div>

@@ -27,17 +27,14 @@
     		  {{ csrf_field() }} {{-- token pour protéger votre formulaire CSRF --}}
 		      <div class="row">
 		        <div class="input-field col s6">
-		          <input id="category_title" name="title" type="text" class="validate" value="{{old('title')}}">
-		          <label for="category_title">Title</label>
+		          {!! Form::inputMacro('text', 'title', 'category_title', old('title')) !!}
          			@include('partials.flash-error-field', ['field' => 'title'])
 		        </div>
 		      </div>
 
 		      <div class="row">
 		        <div class="input-field col s12">
-					<button class="btn waves-effect waves-light" type="submit">Add this category
-						<i class="material-icons right">send</i>
-					</button>
+					{!! Form::submitMacro('add', 'category') !!}
 				</div>
 		      </div>
 		      </div>
