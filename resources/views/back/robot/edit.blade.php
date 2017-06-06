@@ -65,6 +65,7 @@
 				  <div class="switch">
 				    <label>
 				      Unpublished
+				      {{-- @todo1548671--}}
 				      {{--@if( old('status') === null || old('status') != null && $robot->status != old('status') )
 				      	<input name="status" type="checkbox" value="published" {{ selected_fields('published', old('status') )  }}>
 				      @elseif( old('status') === null && $robot->status != old('status') )--}}
